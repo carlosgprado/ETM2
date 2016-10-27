@@ -20,11 +20,11 @@ def index():
 
 @socketio.on('my event yes', namespace = '/mom')
 def cb_yes(message):
-	""" This will send the information back to 
+	""" This will send the information back to
 		the connected client """
 	global understanding
 
-	understanding += delta
+	understanding += ((delta + 0.0) / connected_clients)
 	if understanding > 100:
 		understanding = 100
 
@@ -32,11 +32,11 @@ def cb_yes(message):
 
 @socketio.on('my event no', namespace = '/mom')
 def cb_no(message):
-	""" This will, as the name suggests, sent the 
+	""" This will, as the name suggests, sent the
 		information back to every connected client """
 	global understanding
 
-	understanding -= delta
+	understanding -= ((delta + 0.0) / connected_clients)
 	if understanding < 0:
 		understanding = 0
 

@@ -14,8 +14,8 @@
 		//
 		$(document).ready(function() {
 			// Note the use of the "/mom" namespace
-			// The use of namespaces is for multiplexing 
-			// several connections with different namespaces 
+			// The use of namespaces is for multiplexing
+			// several connections with different namespaces
 			// over the same physical channel.
 			var socket = io.connect('http://' + document.domain + ':' + location.port + '/mom');
 
@@ -46,6 +46,7 @@
 				// Update progress bar
 				$('#myProgress').css("width", msg.u.toString() + '%');
 				$('#myProgress').html(msg.u.toString() + '%');
+                $('#conCounter').html("Connected clients: " + msg.c.toString())
 			});
 		});
 	</script>
@@ -67,6 +68,7 @@
 		<div class="row" style="margin-top:20px">
 			<div id="myProgress" class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">100%</div>
 		</div>
+        <div id="conCounter" class="row" style="margin-top:20px"></div>
 	</div>
 </body>
 </html>
