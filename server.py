@@ -6,8 +6,8 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'CbkcAJSBKSAGcASBcsADaSI$&!R%$EASSA'
 socketio = SocketIO(app)
 
 connected_clients = 0
@@ -62,5 +62,8 @@ def cb_disconnect(m):
 
 
 if __name__ == '__main__':
+
+	app.config['SECRET_KEY'] = 'PUTWHATEVERSECRETHERE'
+
 	print('Starting Websocket Server...')
 	socketio.run(app, host = "0.0.0.0", port = 8888)

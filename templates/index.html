@@ -40,13 +40,30 @@
 			});
 
 			socket.on('my response', function(msg) {
+                // All the client side changes happen here
 				console.log('Received: ' + msg.u + ',' + msg.c);
-				// Placeholder: update connected clients #
 
 				// Update progress bar
 				$('#myProgress').css("width", msg.u.toString() + '%');
 				$('#myProgress').html(msg.u.toString() + '%');
-                $('#conCounter').html("Connected clients: " + msg.c.toString())
+                // Update connection number
+                $('#conCounter').html("Connection number: " + msg.c.toString())
+
+                // Update image
+                var imgSrc = "img/100.png";
+                if (msg.u < 100 && msg.u > 80)
+                    imgSrc = "img/80.png";
+                else if (msg.u <= 80 && msg.u > 60)
+                    imgSrc = "img/60.png";
+                else if (msg.u <= 60 && msg.u > 40)
+                    imgSrc = "img/40.png";
+                else if (msg.u <= 40 && msg.u > 20)
+                    imgSrc = "img/20.png";
+                else
+                    imgSrc = "img/0.gif";
+
+
+                $('#myImage').attr('src', imgSrc);
 			});
 		});
 	</script>
