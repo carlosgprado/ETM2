@@ -25,25 +25,25 @@ class User(UserMixin):
 
 
 @login_manager.user_loader
-def user_loader(email):
-	if email not in users:
+def user_loader(user_id):
+	if user_id not in users:
 		return False
 
 	user = User()
-	user.id = email
+	user.id = user_id
 	return user
 
 @login_manager.request_loader
 def request_loader(request):
-	email = request.form.get('email')
-	if email not in users:
+	user_id = request.form.get('user_id')
+	if user_id not in users:
 		return False
 
 	user = User()
-	user.id = email
+	user.id = user_id
 
 	# NEVER do something like this in a real application! :)
-	user.is_authenticated = request.form['pw'] == users[email]['pw']
+	user.is_authenticated = request.form['pw'] == users[user_id]['pw']
 
 	return user
 
@@ -61,16 +61,16 @@ def login():
 	if request.method == 'GET':
 		return """
 			<form action='login' method = 'POST'>
-			<input type='text' name='email' id='email' placeholder='email'></input>
+			<input type='text' name='user_id' id='user_id' placeholder='user'></input>
 			<input type='password' name='pw' id='pw' placeholder='password'></input>
 			<input type='submit' name='submit'></input>
 			</form> """
 
-	email = request.form['email']
-	if email in users:
-		if request.form['pw'] == users[email]['pw']:
+	user_id = request.form['user_id']
+	if user_id in users:
+		if request.form['pw'] == users[user_id]['pw']:
 			user = User()
-			user.id = email
+			user.id = user_id
 			login_user(user)
 			connected_clients += 1
 			return redirect(url_for('index'))
@@ -90,7 +90,7 @@ def cb_yes(message):
 	if understanding > 100:
 		understanding = 100
 
-	emit('my response', {'u': understanding, 'c': connected_clients}, broadcast = True)
+	emit('update', {'u': understanding, 'c': connected_clients}, broadcast = True)
 
 @socketio.on('my event no', namespace = '/mom')
 def cb_no(message):
@@ -105,7 +105,7 @@ def cb_no(message):
 	if understanding < 0:
 		understanding = 0
 
-	emit('my response', {'u': understanding, 'c': connected_clients}, broadcast = True)
+	emit('update', {'u': understanding, 'c': connected_clients}, broadcast = True)
 
 @socketio.on('connect', namespace = '/mom')
 def cb_connect():
@@ -114,7 +114,7 @@ def cb_connect():
 		return redirect(url_for('login'))
 
 	print('Client connected')
-	emit('my response', {'u': understanding, 'c': connected_clients}, broadcast = True)
+	emit('update', {'u': understanding, 'c': connected_clients}, broadcast = True)
 
 @socketio.on('my disconnect event', namespace = '/mom')
 def cb_disconnect(m):
@@ -122,7 +122,9 @@ def cb_disconnect(m):
 
 	print('Client disconnected')
 	connected_clients -= 1
-	emit('my response', {'u': understanding, 'c': connected_clients}, broadcast = True)
+	if connected_clients < 0:
+		connected_clients = 0
+	emit('update', {'u': understanding, 'c': connected_clients}, broadcast = True)
 
 
 

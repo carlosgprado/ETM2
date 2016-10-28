@@ -39,7 +39,7 @@
 				return false;
 			});
 
-			socket.on('my response', function(msg) {
+			socket.on('update', function(msg) {
                 // All the client side changes happen here
 				console.log('Received: ' + msg.u + ',' + msg.c);
 
@@ -47,7 +47,7 @@
 				$('#myProgress').css("width", msg.u.toString() + '%');
 				$('#myProgress').html(msg.u.toString() + '%');
                 // Update connection number
-                $('#conCounter').html("Connection number: " + msg.c.toString())
+                $('#conCounter').html("Connection number: " + (msg.c + 1).toString())
 
                 // Update image
                 var imgSrc = "/static/100.png";
@@ -72,7 +72,7 @@
 <body>
 	<div class="container">
 		<div class="row" style="margin-top:20px">
-			<img id="myImage" src="/static/100.png" />
+			<img id="myImage" width="500px" heigth="290px" src="/static/100.png" />
 		</div>
 		<div class="row" style="margin-top:20px">
 			<div class="col-sm-6">
