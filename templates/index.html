@@ -45,7 +45,7 @@
 
 				// Update progress bar
 				$('#myProgress').css("width", msg.u.toString() + '%');
-				$('#myProgress').html(msg.u.toString() + '%');
+				$('#myProgress').html(Math.round(msg.u).toString() + '%');
                 // Update connection number
                 $('#conCounter').html("Connection number: " + (msg.c + 1).toString())
 
