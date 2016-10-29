@@ -50,20 +50,24 @@
                 $('#conCounter').html("Connection number: " + (msg.c + 1).toString())
 
                 // Update image
-                var imgSrc = "/static/100.png";
+                var imgSrc = "100.png";
+                var originalList = $("#myImage").attr("src");
+                var originalSrc = originalList.split("/");
 
                 if (msg.u < 100 && msg.u > 80)
-                    imgSrc = "/static/80.png";
+                    imgSrc = "80.png";
                 else if (msg.u <= 80 && msg.u > 60)
-                    imgSrc = "/static/60.png";
+                    imgSrc = "60.png";
                 else if (msg.u <= 60 && msg.u > 40)
-                    imgSrc = "/static/40.png";
+                    imgSrc = "40.png";
                 else if (msg.u <= 40 && msg.u > 20)
-                    imgSrc = "/static/20.png";
+                    imgSrc = "20.png";
                 else if (msg.u <= 20)
-                    imgSrc = "/static/0.gif";
+                    imgSrc = "0.gif";
 
-                $('#myImage').attr('src', imgSrc);
+                // Don't reload images for nothing
+                if (originalSrc[originalSrc.length - 1] != imgSrc)
+                    $('#myImage').attr('src', "/static/" + imgSrc);
 			});
 		});
 	</script>
